@@ -4,6 +4,7 @@
 \usepackage{fontspec}
 \usepackage{xeCJK}
 \usepackage{amsmath}
+\usepackage[a4paper]{geometry}
 \setCJKmainfont{WenQuanYi Micro Hei}
 \XeTeXlinebreaklocale "zh"
 \XeTeXlinebreakskip = 0pt plus 1pt
@@ -24,9 +25,10 @@
 \[ f(x)=q^{x-1}p \]
 
 \subsubsection{累積函數}
-\[ F(x)=p\frac{1-q^x}{1-q}
-       =p\frac{1-q^x}{p}=
-        1-q^x \]
+\[ F(x)=\sum_{x=1}^\infty{q^{x-1}p}
+       =p\frac{1-q^x}{1-q}
+       =p\frac{1-q^x}{p}
+       =1-q^x \]
 
 \subsubsection{期望值}
 \begin{align*}
@@ -45,68 +47,173 @@ E[X]
 
 \subsubsection{變異數}
 
-\bigskip
-先算 \( Var(X) \)
-
 \begin{align*}
 Var(X)
 & = E[(X-\mu)^2]
   = E[(X^2-2\mu X+\mu^2]
   = E[X^2]-2\mu E[X]+\mu^2 \\
 & = E[X^2]-2E[X]^2+E[X]^2
-  = E[X^2]-E[X]^2
-\end{align*}
-
-\bigskip
-再算其中的 \( E[X^2] \)
-
-\[ E[X^2]=\sum_{x=1}^\infty{x^2 q^{x-1}p}
-         =p\sum_{x=1}^\infty{x^2 q^{x-1}} \]
-
-\bigskip
-不過由於我們無法計算出 \( x^2 q^{x-1} \) 的積分，式子的 \( x^2 q^{x-1} \) 無法代換成 \( \frac{d f(q)}{dq} \) 的形式。
-相反的 \( x(x-1)q^{x-2} = \frac{d q^x}{dq} \) 卻成立，我們可以利用該式對 \( E[X] \) 做些手腳：算 \( E[X(X-1)] \) 作為替代。
-
-\begin{align*}
+  = E[X^2]-E[X]^2 \\
+E[X^2] & =\sum_{x=1}^\infty{x^2 q^{x-1}p}
+  = p\sum_{x=1}^\infty{x^2 q^{x-1}}
+\intertext{由於我們無法計算出 \( x^2 q^{x-1} \) 的積分，式子的 \( x^2 q^{x-1} \) 無法代換成 \( \frac{d f(q)}{dq} \) 的形式。}
+\intertext{藉由 \( x(x-1)q^{x-2} = \frac{d q^x}{dq} \)，我們可以改算 \( E[X(X-1)] \)。}
 E[X(X-1)]
 & =   \sum_{x=1}^\infty{x(x-1)q^{x-1}p}
   = pq\sum_{x=1}^\infty{x(x-1)q^{x-2}}
-  = pq\sum_{x=1}^\infty{\frac{d q^x}{dq^2}}
-  = pq\frac{d}{dq^2}(\frac{1}{1-q}) \\
-& = pq(\frac{0(1-q)-1(-1)}{(1-q)^2})'
-  = pq(\frac{1}{(1-q)^2})'
-  = pq(\frac{0(1-q)^2-1\cdot2(1-q)(-1)}{(1-q)^4}) \\
-& = pq\frac{2p}{p^4}
+  = pq\sum_{x=1}^\infty{\frac{d q^x}{dq^2}} \\
+& = pq\frac{d}{dq^2}(\frac{1}{1-q})
+  = pq(\frac{0(1-q)-1(-1)}{(1-q)^2})' \\
+& = pq(\frac{1}{(1-q)^2})'
+  = pq(\frac{0(1-q)^2-1\cdot2(1-q)(-1)}{(1-q)^4})
+  = pq\frac{2p}{p^4}
   =   \frac{2q}{p^2} \\
-\bigskip \\
-E[X^2] & = E[X(X-1)]+E[X] \\
-& = \frac{2q}{p^2}+\frac{1}{p}
+E[X^2] & = E[X(X-1)]+E[X]
+  = \frac{2q}{p^2}+\frac{1}{p}
   = \frac{2q+p}{p^2}
   = \frac{2(1-p)+p}{p^2}
   = \frac{2-p}{p^2} \\
-\bigskip \\
-Var(X) & = E[X^2]-E[X]^2 \\
-& = \frac{2-p}{p^2}-\frac{1}{p^2}
+Var(X) & = E[X^2]-E[X]^2
+  = \frac{2-p}{p^2}-\frac{1}{p^2}
   = \frac{1-p}{p^2}
   = \frac{q}{p^2}
 \end{align*}
 
 \subsubsection{動差生成函數}
-
-\bigskip
-技巧：把 \( x-1 \) 提出來
-
 \begin{align*}
 m_x(t)
 & = E[e^{tX}]
   = \sum_{x=1}^\infty{e^{tx}q^{x-1}p}
-  = p\sum_{x=1}^\infty{e^{tx}q^{x-1}}
-  = p\sum_{x=1}^\infty{e^{t(x-1)}e^t q^{x-1}}
-  = pe^t\sum_{x=1}^\infty{(qe^t)^{x-1}} \\
-& = pe^t\frac{1}{1-qe^t}
+  = p\sum_{x=1}^\infty{e^{tx}q^{x-1}} \\
+\intertext{把 \( x-1 \) 提出來}
+& = p\sum_{x=1}^\infty{e^{t(x-1)}e^t q^{x-1}}
+  = pe^t\sum_{x=1}^\infty{(qe^t)^{x-1}}
+  = pe^t\frac{1}{1-qe^t}
   = \frac{pe^t}{1-qe^t}
 \end{align*}
 
 \clearpage
+
+\subsection{Binomial Distribution 二項分佈}
+
+\bigskip
+\subsubsection{密度函數}
+\[ f(x)=\binom{n}{x}p^x q^{n-x} \]
+
+\subsubsection{累積函數}
+\[ F(x)=\sum_{k=0}^x{\binom{n}{k}p^k q^{n-k}} \]
+
+\subsubsection{期望值}
+\begin{align*}
+\end{align*}
+
+\subsubsection{變異數}
+\begin{align*}
+\end{align*}
+
+\subsubsection{動差生成函數}
+\begin{align*}
+\end{align*}
+
+\subsection{Negative Binomial Distribution 負二項分佈}
+
+\bigskip
+\subsubsection{密度函數}
+\[ f(x)=\binom{x-1}{r-1}p^r q^{x-r} \]
+
+\subsubsection{累積函數}
+\[ F(x)=\sum_{k=r}^x{\binom{k-1}{r-1}p^r q^{k-r}}
+       =\sum_{l=0}^x{\binom{l+r-1}{r-1}p^r q^l} \]
+
+\subsubsection{期望值}
+\begin{align*}
+E[X]
+& = \sum_{x=0}^\infty{x\binom{x+r-1}{r-1}p^r q^x}
+  = \sum_{x=1}^\infty{x\binom{x+r-1}{r-1}p^r q^x}
+  = \sum_{x=1}^\infty{\frac{(x+r-1)!}{(r-1)!\,(x-1)!}\,p^r q^x} \\
+& = \sum_{y=0}^\infty{\frac{(y+r)!}{(r-1)!\,y!}\,p^r q^{y+1}}
+  = \sum_{y=0}^\infty{\frac{(y+s-1)!}{(s-2)!\,y!}\,p^{s-1}q^{y+1}}
+  = \frac{(s-1)q}{p}\sum_{y=0}^\infty{\frac{(y+s-1)!}{(s-1)!\,y!}\,p^s q^y} \\
+& = \frac{rq}{p}\sum_{y=0}^\infty{\binom{y+s-1}{s-1}p^s q^y}
+  = \frac{rq}{p}
+\end{align*}
+
+\subsubsection{變異數}
+\begin{align*}
+Var(X)
+& = E[X^2]-E[X]^2 \\
+E[X^2] & = \sum_{x=0}^\infty{x^2\binom{x+r-1}{r-1}p^r q^x}
+  = \sum_{x=1}^\infty{x^2\binom{x+r-1}{r-1}p^r q^x}
+  = \sum_{x=1}^\infty{x\frac{(x+r-1!)}{(r-1)!\,(x-1)!}p^r q^x} \\
+& = \sum_{y=0}^\infty{(y+1)\frac{(y+r!)}{(r-1)!\,y!}\,p^r q^{y+1}}
+  = \sum_{y=0}^\infty{(y+1)\frac{(y+s-1!)}{(s-2)!\,y!}\,p^{s-1} q^{y+1}} \\
+& = \frac{(s-1)q}{p}\sum_{y=0}^\infty{(y+1)\frac{(y+s-1!)}{(s-1)!\,y!}\,p^s q^y}
+  = \frac{rq}{p}\sum_{y=0}^\infty{(y+1)\frac{(y+s-1!)}{(s-1)!\,y!}\,p^s q^y} \\
+& = \frac{rq}{p}\sum_{y=0}^\infty{(y+1)\binom{y+s-1}{s-1}p^s q^y} \\
+& = \frac{rq}{p}\bigg(
+  \sum_{y=0}^\infty{y\binom{y+s-1}{s-1}p^s q^y} +
+  \sum_{y=0}^\infty{\binom{y+s-1}{s-1}p^s q^y}\bigg) \\
+& = \frac{rq}{p}(\frac{sq}{p}+1)
+  = \frac{rq}{p}(\frac{(r+1)q}{p}+1)
+  = \frac{rq}{p}(\frac{rq}{p}+\frac{q}{p}+1) \\
+Var(X) & = E[X^2]-E[X]^2
+  = \frac{rq}{p}(\frac{rq}{p}+\frac{q}{p}+1) - \frac{rq}{p}\frac{rq}{p}
+  = \frac{rq}{p}(\frac{q}{p}+1)
+  = \frac{rq}{p}(\frac{q+p}{p})
+  = \frac{rq}{p^2}
+\end{align*}
+
+\clearpage
+
+\subsubsection{動差生成函數}
+\begin{align}
+\intertext{泰勒展開式}
+f(x)
+& = \frac{f^{(0)}(a)}{0!}(x-a)^0+
+    \frac{f^{(1)}(a)}{1!}(x-a)^1+
+    ...+
+    \frac{f^{(k)}(a)}{k!}(x-a)^k+
+    ...\,\bigg|_{a=0} \nonumber \\
+& = \frac{f^{(0)}(0)}{0!}x^0+
+    \frac{f^{(1)}(0)}{1!}x^1+
+    ...+
+    \frac{f^{(k)}(0)}{k!}x^k+
+    ... \nonumber \\
+\intertext{Let \( f(x)=(x+1)^r \)}
+(x+1)^r & = \frac{(a+1)^r}{0!}x^0+
+    \frac{r(a+1)^{r-1}}{1!}x^1+
+    \frac{r(r-1)(a+1)^{r-2}}{2!}x^2+
+    ... \nonumber \\
+& + \frac{r!\,(a+1)^{r-k}}{k!\,(r-k)!}x^k+
+    ...\,\bigg|_{a=0} \nonumber \\
+& = \frac{1}{0!}x^0+
+    \frac{r}{1!}x^1+
+    \frac{r(r-1)}{2!}x^2+
+    ...+
+    \frac{r!}{k!\,(r-k)!}x^k+
+    ... \nonumber \\
+& = \binom{r}{0}x^0+
+    \binom{r}{1}x^1+
+    \binom{r}{2}x^2+
+    ...+
+    \binom{r}{k}x^k+
+    ...
+  = \sum_{k=0}^\infty{\binom{r}{k}x^k} \nonumber \\
+(x+1)^{-r} & = \sum_{k=0}^\infty{\binom{-r}{k}x^k}
+  = \sum_{k=0}^\infty{\frac{(-r)(-r-1)...(-r-k+1)}{k!}x^k} \nonumber \\
+& = \sum_{k=0}^\infty{\frac{(-1)^k\,r(r+1)...(r+k-1)}{k!}x^k}
+  = \sum_{k=0}^\infty{\frac{r(r+1)...(r+k-1)}{k!}(-x)^k} \nonumber \\
+& = \sum_{k=0}^\infty{\frac{(r+k-1)!}{k!\,(r-1)!}(-x)^k}
+  = \sum_{k=0}^\infty{\binom{k+r-1}{r-1}(-x)^k} \nonumber \\
+(-x+1)^{-r} & = (1-x)^{-r}
+  = \sum_{k=0}^\infty{\binom{k+r-1}{r-1}x^k} \\
+m_t(x) & = E[e^{tx}] \nonumber \\
+& = \sum_{x=0}^\infty{e^{tx}\binom{x+r-1}{r-1} p^r q^x}
+  = \sum_{x=0}^\infty{\binom{x+r-1}{r-1} p^r (qe^t)^x}
+  = p^r \sum_{x=0}^\infty{\binom{x+r-1}{r-1}(qe^t)^x} \nonumber \\
+\intertext{代入 (1) 式}
+& = p^r(1-qe^t)^{-r}
+  = (\frac{p}{1-qe^t})^r \nonumber
+\end{align}
 
 \end{document}

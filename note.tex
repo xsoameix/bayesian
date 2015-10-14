@@ -105,16 +105,48 @@ m_x(t)
 
 \subsubsection{期望值}
 \begin{align*}
+E[X]
+& = \sum_{x=0}^n{x\binom{n}{x}p^x q^{n-x}}
+  = \sum_{x=1}^n{x\binom{n}{x}p^x q^{n-x}}
+  = \sum_{x=1}^n{n\frac{(n-1)!}{(x-1)!\,(n-x)!}\,p^x q^{n-x}} \\
+& = \sum_{x=1}^n{n\binom{n-1}{x-1}p^x q^{n-x}}
+  = \sum_{x=1}^n{n\binom{n-1}{x-1}p^{x-1}p q^{(n-1)-(x-1)}} \\
+& = np\sum_{x=1}^n{\binom{n-1}{x-1}p^{x-1} q^{(n-1)-(x-1)}} \\
+\intertext{Let \( y = x-1, m = n-1 \)}
+& = np\sum_{y=0}^n{\binom{n-1}{y}p^y q^{(n-1)-y}}
+  = np\sum_{y=0}^n{\binom{m}{y}p^y q^{m-y}}
+  = np
 \end{align*}
 
 \subsubsection{變異數}
 \begin{align*}
+Var(X)
+& = E[X^2]-E[X]^2 \\
+\intertext{Let \( y = x-1, m = n-1 \)}
+E[X^2] & = \sum_{x=0}^n{x^2\binom{n}{x}p^x q^{n-x}}
+  = np\sum_{y=0}^m{x\binom{m}{y}p^y q^{m-y}}
+  = np\sum_{y=0}^m{(y+1)\binom{m}{y}p^y q^{m-y}} \\
+& = np\bigg(
+    \sum_{y=0}^m{y\binom{m}{y}p^y q^{m-y}} +
+    \sum_{y=0}^m{\binom{m}{y}p^y q^{m-y}}\bigg) \\
+& = np(mp+1)
+  = np((n-1)p+1)
+  = np(np-p+1) \\
+Var(X) & = E[X^2]-E[X]^2
+  = np(np-p+1)-np\cdot np
+  = np(1-p)
+  = npq
 \end{align*}
 
 \subsubsection{動差生成函數}
 \begin{align*}
+m_t(x) & = E[e^{tx}]
+  = \sum_{x=0}^n{e^{tx}\binom{n}{x}p^x q^{n-x}}
+  = \sum_{x=0}^n{\binom{n}{x}(pe^t)^x q^{n-x}}
+  = (pe^t+q)^n
 \end{align*}
 
+\bigskip
 \subsection{Negative Binomial Distribution 負二項分佈}
 
 \bigskip

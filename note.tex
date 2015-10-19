@@ -82,7 +82,7 @@ Var(X) & = E[X^2]-E[X]^2
 \subsubsection{動差生成函數}
 \begin{align*}
 m_x(t)
-& = E[e^{tX}]
+& = E[e^{tx}]
   = \sum_{x=1}^\infty{e^{tx}q^{x-1}p}
   = p\sum_{x=1}^\infty{e^{tx}q^{x-1}} \\
 \intertext{把 \( x-1 \) 提出來}
@@ -247,5 +247,131 @@ m_t(x) & = E[e^{tx}] \nonumber \\
 & = p^r(1-qe^t)^{-r}
   = (\frac{p}{1-qe^t})^r \nonumber
 \end{align}
+
+\bigskip
+\subsection{Hypergeometric Distribution 超幾何分佈}
+
+\bigskip
+\subsubsection{密度函數}
+\[ f(x)=\frac{\binom{r}{x}\binom{N-r}{N-x}}{\binom{N}{n}} \]
+
+\subsubsection{累積函數}
+\[ F(x)=\sum_{k=0}^x{\frac{\binom{r}{k}\binom{N-r}{n-k}}{\binom{N}{n}}} \]
+
+\subsubsection{期望值}
+\begin{align*}
+E[X]
+& = \sum_{x=0}^r{x\frac{\binom{r}{x}\binom{N-r}{n-x}}{\binom{N}{n}}}
+  = \sum_{x=1}^r{x\frac{\binom{r}{x}\binom{N-r}{n-x}}{\binom{N}{n}}}
+  = \sum_{x=1}^r{r\frac{\binom{r-1}{x-1}\binom{N-r}{n-x}}{\binom{N}{n}}}
+  = \sum_{y=0}^r{(s+1)\frac{\binom{s}{y}\binom{N-s-1}{n-y-1}}{\binom{N}{n}}} \\
+& = \sum_{y=0}^r{\frac{(s+1)n}{N}\frac{\binom{s}{y}\binom{N-s-1}{n-y-1}}{\binom{N-1}{n-1}}}
+  = \frac{rn}{N}\sum_{y=0}^r{\frac{\binom{s}{y}\binom{N-s-1}{n-y-1}}{\binom{N-1}{n-1}}}
+  = \frac{rn}{N}\sum_{y=0}^r{\frac{\binom{s}{y}\binom{M-s}{m-y}}{\binom{M}{m}}}
+  = \frac{rn}{N}
+  = \frac{nr}{N}
+\end{align*}
+
+\subsubsection{變異數}
+\begin{align*}
+Var(X)
+& = E[X^2]-E[X]^2 \\
+E[X^2] & = \sum_{x=0}^r{x^2\frac{\binom{r}{x}\binom{N-r}{n-x}}{\binom{N}{n}}}
+  = \frac{nr}{N}\sum_{y=0}^s{x\frac{\binom{s}{y}\binom{N-s}{n-y}}{\binom{N}{n}}}
+  = \frac{nr}{N}\sum_{y=0}^s{(s+1)\frac{\binom{s}{y}\binom{N-s}{n-y}}{\binom{N}{n}}} \\
+& = \frac{nr}{N}\bigg(
+    \sum_{y=0}^s{s\frac{\binom{s}{y}\binom{N-s}{n-y}}{\binom{N}{n}}}+
+    \sum_{y=0}^s{\frac{\binom{s}{y}\binom{N-s}{n-y}}{\binom{N}{n}}}\bigg)
+  = \frac{nr}{N}(\frac{ms}{M}+1) \\
+& = \frac{nr}{N}(\frac{(n-1)(r-1)}{N-1}+1)
+  = \frac{nr}{N}(\frac{nr-n-r+1}{N-1}+1) \\
+Var(X) & = E[X^2]-E[X]^2
+  = \frac{nr}{N}(\frac{nr-n-r+1}{N-1}+1)-\frac{nr}{N}\frac{nr}{N}
+  = \frac{nr}{N}(\frac{nr-n-r+N}{N-1})-\frac{nr}{N}\frac{nr}{N} \\
+& = \frac{nr}{N}(\frac{nr-n-r+N}{N-1}-\frac{nr}{N})
+  = \frac{nr}{N}(\frac{nrN-nN-rN+N^2-nr(N-1)}{N(N-1)}) \\
+& = \frac{nr}{N}(\frac{nrN-nN-rN+N^2-nrN-nr)}{N(N-1)})
+  = \frac{nr}{N}(\frac{nN-rN+N^2-nr)}{N(N-1)}) \\
+& = \frac{nr}{N}(\frac{(N-n)(N-r)}{N(N-1)})
+  = \frac{nr(N-n)(N-r)}{N^2(N-1)}
+\end{align*}
+
+\subsubsection{動差生成函數}
+\begin{align*}
+m_t(x)
+& = E[e^{tx}] = \sum_{x=0}^r{e^{tx}\frac{\binom{r}{x}\binom{N-r}{n-x}}{\binom{N}{n}}}
+\end{align*}
+
+\bigskip
+\subsection{Poisson Distribution 步瓦松分佈}
+
+\bigskip
+\subsubsection{密度函數}
+\begin{align*}
+f(x)
+& = \lim_{n\to\infty}\binom{n}{x}p^x q^{n-x}
+  = \lim_{n\to\infty}\frac{n!}{x!\,(n-x)!}\,(\frac{\lambda}{n})^x(1-\frac{\lambda}{n})^{n-x} \\
+& = \lim_{n\to\infty}\frac{n!}{(n-x)!\,n^x}\frac{\lambda^x}{x!}(1-\frac{\lambda}{n})^n(1-\frac{\lambda}{n})^{-x}
+  = \lim_{n\to\infty}\frac{n!}{(n-x)!\,n^x}\frac{\lambda^x}{x!}(1-\frac{\lambda}{n})^n \\
+\lim_{n\to\infty}(1+\frac{x}{n})^n & = \lim_{n\to\infty}exp(\ln((1+\frac{x}{n})^n))
+  = exp(\lim_{n\to\infty}\ln((1+\frac{x}{n})^n))
+  = exp(\lim_{n\to\infty}n\ln(1+\frac{x}{n})) \\
+& = exp(\lim_{n\to\infty}\frac{x\ln(1+\frac{x}{n})}{\frac{x}{n}})
+  = exp(\lim_{\frac{x}{n}\to0}\frac{x\ln(1+\frac{x}{n})}{\frac{x}{n}}) \\
+& = exp(\lim_{\frac{x}{n}\to0}
+      \frac{d(x\ln(1+\frac{x}{n}))/d(\frac{x}{n})}
+           {d(\frac{x}{n})/d(\frac{x}{n})})
+  = exp(\lim_{\frac{x}{n}\to0}
+      \frac{x\frac{1}{1+\frac{x}{n}}}
+           {1})
+  = exp(\frac{x\frac{1}{1+0}}{1})
+  = e^x \\
+f(x) & = e^{-\lambda}\lim_{n\to\infty}\frac{n!}{(n-x)!\,n^x}\frac{\lambda^x}{x!}
+  = \frac{\lambda^x e^{-\lambda}}{x!}\lim_{n\to\infty}\frac{n!}{(n-x)!\,n^x} \\
+& = \frac{\lambda^x e^{-\lambda}}{x!}\lim_{n\to\infty}\frac{n(n-1)...(n-(x-1))}{n^x}
+  = \frac{\lambda^x e^{-\lambda}}{x!}\lim_{n\to\infty}1(1-\frac{1}{n})...(1-\frac{x-1}{n}) \\
+& = \frac{\lambda^x e^{-\lambda}}{x!}
+\end{align*}
+
+\subsubsection{累積函數}
+\[ F(x)=\sum_{k=0}^x{\frac{\lambda^k e^{-\lambda}}{k!}}
+       =e^{-\lambda}\sum_{k=0}^x{\frac{\lambda^k}{k!}} \]
+
+\subsubsection{期望值}
+\begin{align*}
+E[X]
+& = \sum_{x=0}^\infty{x\frac{\lambda^x e^{-\lambda}}{x!}}
+  = \sum_{x=1}^\infty{x\frac{\lambda^x e^{-\lambda}}{x!}}
+  = \lambda\sum_{x=1}^\infty{\frac{\lambda^{x-1} e^{-\lambda}}{(x-1)!}}
+  = \lambda\sum_{y=0}^\infty{\frac{\lambda^y e^{-\lambda}}{y!}}
+  = \lambda
+\end{align*}
+
+\subsubsection{變異數}
+\begin{align*}
+Var(X)
+& = E[X^2]-E[X]^2 \\
+E[X^2] & = \sum_{x=0}^\infty{x^2\frac{\lambda^x e^{-\lambda}}{x!}}
+  = \lambda\sum_{y=0}^\infty{x\frac{\lambda^y e^{-\lambda}}{y!}}
+  = \lambda\sum_{y=0}^\infty{(y+1)\frac{\lambda^y e^{-\lambda}}{y!}}
+  = \lambda\bigg(
+      \sum_{y=0}^\infty{y\frac{\lambda^y e^{-\lambda}}{y!}}+
+      \sum_{y=0}^\infty{\frac{\lambda^y e^{-\lambda}}{y!}}\bigg) \\
+& = \lambda(\lambda+1) \\
+Var(X) & = E[X^2]-E[X]^2
+  = \lambda(\lambda+1)-\lambda\lambda
+  = \lambda
+\end{align*}
+
+\subsubsection{動差生成函數}
+\begin{align*}
+m_t(x)
+& = E[e^{tx}]
+  = \sum_{x=0}^\infty{e^{tx}\frac{\lambda^x e^{-\lambda}}{x!}}
+  = \sum_{x=0}^\infty{\frac{(\lambda e^t)^x e^{-\lambda}}{x!}}
+  = e^{-\lambda}\sum_{x=0}^\infty{\frac{(\lambda e^t)^x}{x!}}
+  = e^{-\lambda}e^{\lambda e^t}
+  = e^{\lambda(e^t-1)}
+\end{align*}
 
 \end{document}
